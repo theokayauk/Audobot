@@ -7,27 +7,29 @@ from slack_sdk.errors import SlackApiError
 
 def keyword_get(keywords:list):
     
-    # WebClient instantiates a client that can call API methods
-    # When using Bolt, you can use either `app.client` or the `client` passed to listeners.
-    print(tk.bot_token)
-    client = WebClient(token= tk.bot_token)
-    logger = logging.getLogger(__name__)
+    for keyword in keywords:
+        # WebClient instantiates a client that can call API methods
+        print(tk.bot_token)
+        client = WebClient(token= tk.bot_token)
+        logger = logging.getLogger(__name__)
+        try:
+            # Call the conversations.list method using the WebClient
+            conversation_ids = []
+            for result in client.conversations_list():
+                for channel in result["channels"]:
+                    if channel['is_member'] == True:
+                        conversation_ids.append(channel['id'])
+                        
+            print(conversation_ids)
+            for convo in conversation_ids: 
+                    result = client.conversations_history(channel=convo, inclusive=True, limit=1)
+                    message = result["messages"][0]
+                    # Print message text
+                    print(message["text"])
 
+    
 
-    channel_name = "legal-interns-2023"
-    conversation_id = None
-    try:
-        # Call the conversations.list method using the WebClient
-        for result in client.conversations_list():
-            if conversation_id is not None:
-                break
-            for channel in result["channels"]:
-                if channel["name"] == channel_name:
-                    conversation_id = channel["id"]
-                    #Print result
-                    print(f"Found conversation ID: {conversation_id}")
-                    break
-            print(result)
+        except SlackApiError as e:
+            print(f"Error: {e}")
 
-    except SlackApiError as e:
-        print(f"Error: {e}")
+keyword_get(['hey'])
