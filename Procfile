@@ -1,1 +1,1 @@
-web: python hellobuddy.py
+web: gunicorn hellobuddy:app
