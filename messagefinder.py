@@ -29,5 +29,3 @@ def keyword_get(keywords:list):
 
         except SlackApiError as e:
             print(f"Error: {e}")
-
-keyword_get(['hey'])
