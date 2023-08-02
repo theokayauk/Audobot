@@ -23,9 +23,7 @@ def keyword_get(keywords:list):
             print(conversation_ids)
             for convo in conversation_ids: 
                     result = client.conversations_history(channel=convo, inclusive=True, limit=1)
-                    message = result["messages"][0]
-                    # Print message text
-                    print(message["text"])
+                    print(result)
 
     
 
