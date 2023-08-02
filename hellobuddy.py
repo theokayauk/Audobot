@@ -8,20 +8,14 @@ from flask import request as flask_request
 
 app = Flask(__name__)
 
-@app.route("/", methods=['GET'])
+@app.route("/", methods=['GET', 'POST'])
 def hello():
-    return Response("Hello, World!"), 200
+    return "Hello, World"
 
-@app.route('/verify', methods=['POST'])
-def inbound():
-    """
-    Inbound POST from Slack to test token
-    """
-    # When Slack sends a POST to your app, it will send a JSON payload:
-    payload = flask_request.get_json()
-
-    # This response will only be used for the initial URL validation:
-    if payload:
-        return Response(payload['challenge']), 200
+@app.route('/slack', methods=['POST'])
+def helloo():
+    return "Hello, World"
     
+if __name__ == '__main__':
+  app.run(debug=True)
     
